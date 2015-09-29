@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src = "https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src = "./game_of_life.js"></script>
+	<script src = "./draw_game.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Finger+Paint' rel='stylesheet' type='text/css'>
+	<style>
+	.textClass {
+		 -webkit-animation: color_change .63s infinite alternate;
+		 -moz-animation: color_change .63s infinite alternate;
+		 -ms-animation: color_change .63s infinite alternate;
+		 -o-animation: color_change .63s infinite alternate;
+		 animation: color_change .63s infinite alternate;
+		}
+
+		@-webkit-keyframes color_change {
+		 from { color: blue; }
+		 to { color: green; }
+		}
+		@-moz-keyframes color_change {
+		 from { color: blue; }
+		 to { color: green; }
+		}
+		@-ms-keyframes color_change {
+		 from { color: blue; }
+		 to { color: green; }
+		}
+		@-o-keyframes color_change {
+		 from { color: blue; }
+		 to { color: green; }
+		}
+		@keyframes color_change {
+		 from { color: blue; }
+		 to { color: green; }
+		}
+
+
+   
+</style>
+</head>
+<body>
+
+<audio  autoplay loop src="classicmusic.mp3">
+	</audio>
+<div style = "width: 20%;display: inline-block;">
+	<image src = "snoop.gif"></image>
+</div>
+<div style = "width: 50%; margin: auto; display: inline-block;">
+<center>
+	<image src = "doggydogg.png" id = "snoop" hidden> </image>
+	<h1 style = "font-family: 'Finger Paint', cursive; font-size: 80px;" class = "white-text textClass"> Game of Life </h1>
+	<canvas id="myCanvas" width="500" height="500"
+	style="border:1px solid #d3d3d3;">
+	Your browser does not support the canvas element.
+	</canvas> <br/>
+	 <div class="switch ">
+    <label>
+      Off
+      <input type="checkbox" id = "startStop" class = "purple darken-2">
+      <span class="lever purple lighten-2"></span>
+      On
+    </label>
+  </div> <br/>
+	<button id = "stepButton" style = "color: #ba68c8">Step</button>
+	<button id = "clearButton" style = "color: #ba68c8">Clear</button>
+	<button id = "randomButton" style = "color: #ba68c8">Randomize</button>
+	<br/>
+
+	<form action="#" style = "width: 100px; margin: auto" >
+    <p class="range-field" >
+      <input type="range" id="timeInterval" min="50" max="2000" />
+    </p>
+  	</form>
+ 	</center>
+ </div>
+ <div style = "width: 20%; display: inline-block;">
+	<image src = "snoop.gif"></image>
+</div>
+
+<script>
+	var x = new gameOfLife(15,15);
+	var y = new canvasDrawer(x, "myCanvas");
+</script> 
+
+</body>
+</html>
