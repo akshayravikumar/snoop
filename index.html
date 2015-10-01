@@ -2,86 +2,59 @@
 <html>
 <head>
 	<script src = "https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script src = "./game_of_life.js"></script>
-	<script src = "./draw_game.js"></script>
+	<script src = "./assets/js/game_of_life.js"></script>
+	<script src = "./assets/js/draw_game.js"></script>
+	<script src = "./assets/js/init_board.js"></script>
 	<link href='https://fonts.googleapis.com/css?family=Finger+Paint' rel='stylesheet' type='text/css'>
-	<style>
-	.textClass {
-		 -webkit-animation: color_change .63s infinite alternate;
-		 -moz-animation: color_change .63s infinite alternate;
-		 -ms-animation: color_change .63s infinite alternate;
-		 -o-animation: color_change .63s infinite alternate;
-		 animation: color_change .63s infinite alternate;
-		}
-
-		@-webkit-keyframes color_change {
-		 from { color: blue; }
-		 to { color: green; }
-		}
-		@-moz-keyframes color_change {
-		 from { color: blue; }
-		 to { color: green; }
-		}
-		@-ms-keyframes color_change {
-		 from { color: blue; }
-		 to { color: green; }
-		}
-		@-o-keyframes color_change {
-		 from { color: blue; }
-		 to { color: green; }
-		}
-		@keyframes color_change {
-		 from { color: blue; }
-		 to { color: green; }
-		}
-
-
-   
-</style>
+ 	<link rel="stylesheet" href ="./assets/css/style.css">
 </head>
 <body>
 
-<audio  autoplay loop src="classicmusic.mp3">
-	</audio>
-<div style = "width: 20%;display: inline-block;">
-	<image src = "snoop.gif"></image>
+<!-- <audio autoplay loop src="./assets/media/classicmusic.mp3"></audio> -->
+
+<div style = "width: 20%; display: inline-block;">
+	<image src = "./assets/media/snoop.gif"></image>
 </div>
+
 <div style = "width: 50%; margin: auto; display: inline-block;">
 <center>
-	<image src = "doggydogg.png" id = "snoop" hidden> </image>
-	<h1 style = "font-family: 'Finger Paint', cursive; font-size: 80px;" class = "white-text textClass"> Game of Life </h1>
+	<image src = "./assets/media/doggydogg.png" id = "snoop" hidden> </image>
+	<div id = "title"> Game of Life </div> <br/>
+
 	<canvas id="myCanvas" width="500" height="500"
 	style="border:1px solid #d3d3d3;">
 	Your browser does not support the canvas element.
-	</canvas> <br/>
-	 <div class="switch ">
-    <label>
-      Off
-      <input type="checkbox" id = "startStop" class = "purple darken-2">
-      <span class="lever purple lighten-2"></span>
-      On
+	</canvas> <br/> <br/>
+
+</center>
+	<div class="onoffswitch" style = "margin:auto">
+    <input type="checkbox" name="onoffswitch"  class="onoffswitch-checkbox" id="myonoffswitch" >
+    <label class="onoffswitch-label" for="myonoffswitch">
+        <span class="onoffswitch-inner"></span>
+        <span class="onoffswitch-switch"></span>
     </label>
-  </div> <br/>
-	<button id = "stepButton" style = "color: #ba68c8">Step</button>
-	<button id = "clearButton" style = "color: #ba68c8">Clear</button>
-	<button id = "randomButton" style = "color: #ba68c8">Randomize</button>
+</div>
+<center>
+  <br/>
+	<button id = "stepButton" class = "btn">Step</button>
+	<button id = "clearButton" class = "btn">Clear</button>
+	<button id = "randomButton" class = "btn">Randomizzle</button>
+	<button id = "presetButton" class = "btn">Preset</button>
+	<br/>
 	<br/>
 
-	<form action="#" style = "width: 100px; margin: auto" >
-    <p class="range-field" >
-      <input type="range" id="timeInterval" min="50" max="2000" />
-    </p>
-  	</form>
+	Milliseconds per update: <div id = "speed">100</div>
+
+	<div style = "width: 180px">
+	 <input type="range" id="timeInterval" min="50" max="1000" value="100" />
+	</div>
+
  	</center>
  </div>
- <div style = "width: 20%; display: inline-block;">
-	<image src = "snoop.gif"></image>
-</div>
 
-<script>
-	var x = new gameOfLife(15,15);
-	var y = new canvasDrawer(x, "myCanvas");
-</script> 
+ <div style = "width: 20%; display: inline-block;">
+	<image src = "./assets/media/snoop.gif"></image>
+</div>
 
 </body>
 </html>
