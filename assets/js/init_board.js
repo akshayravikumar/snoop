@@ -8,8 +8,8 @@ $(document).ready(function() {
 	start_drawing = false;
 
 	// the game and board we plan on using
-	var game = new gameOfLife(15,15);
-	var board = new canvasDrawer(game, "myCanvas");
+	var game = gameOfLife(15,15);
+	var board = canvasDrawer(game, "myCanvas");
 
 	// to continuously update the draw the board every TIME_INTERVAL milliseconds
 	drawRepeatedly = function() {
@@ -46,7 +46,7 @@ $(document).ready(function() {
 				start_drawing = true;
 				drawRepeatedly();
 			} else {
-					start_drawing = false;
+				start_drawing = false;
 			}
 	})
 
@@ -66,6 +66,7 @@ $(document).ready(function() {
 	 // use the x and y coordinates to find which cell was clicked
 	 var cell_x = Math.floor((e.pageX - $("#myCanvas").offset().left)/board.getCellWidth());
 	 var cell_y = Math.floor((e.pageY - $("#myCanvas").offset().top)/board.getCellWidth());
+	 // toggle this cell, then redraw the board
 	 game.switchCell(cell_x, cell_y);
 	 board.draw();
 	});

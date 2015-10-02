@@ -1,9 +1,14 @@
-canvasDrawer = function(gameOfLife, canvasId) {
+/**
+ * Draws the canvas that represents the game.
+ *
+ * @param {gameOfLife} game - the game instance to use (must be valid)
+ * @param {String} canvasId - the id of the canvas     (must exist)
+ */
+ canvasDrawer = function(game, canvasId) {
 	var that = Object.create(canvasDrawer.prototype);
 
 	var canvas = document.getElementById(canvasId);
 	var ctx = canvas.getContext("2d");
-	var game = gameOfLife;
 
 	// get size from the game board, and update the canvas' size accordingly
 	var SIZE_X = game.cells.length;
