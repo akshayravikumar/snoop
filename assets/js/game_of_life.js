@@ -8,26 +8,23 @@
 
 	var that = Object.create(gameOfLife.prototype);
 
-	// height/length of the board
+	// height and length of the board
 	var SIZE_X = x;
 	var SIZE_Y = y;
 
-	// size, in pixels, of each square
-	var CELL_WIDTH = 8;
-
-	// some present configurations, and a counter to show which one we will currently
-	// display to the user
+	// some present configurations, and a counter to show which one we will currently display to the user
 	var presetPretty  = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],[0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],[0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],[0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],[0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],[0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],[0,1,0,0,0,0,1,0,1,0,0,0,0,1,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,1,1,1,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
 	var presetSwag    = [[0,1,1,1,0,1,0,0,0,1,1,1,1,1,0],[0,1,0,1,0,1,0,0,0,1,0,1,0,0,0],[0,1,0,1,0,1,0,0,0,1,0,1,0,0,0],[0,1,0,1,0,1,0,0,0,1,0,1,0,0,0],[0,1,0,1,0,1,0,0,0,1,0,1,0,0,0],[0,1,0,1,1,1,0,0,0,1,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,1,1,1,1,0,0,0,1,1,1,1,1,0],[0,0,0,0,0,1,0,0,0,1,0,0,0,1,0],[0,0,0,0,1,1,0,0,0,1,0,0,0,1,0],[0,0,0,1,0,0,0,0,0,1,0,0,0,1,0],[0,0,0,0,1,1,0,0,0,1,0,1,0,1,0],[0,0,0,0,0,1,0,0,0,1,0,1,0,1,0],[0,1,1,1,1,1,0,0,0,1,0,1,1,1,0]];
 	var presetSmile   = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],[0,0,1,1,1,0,0,1,1,1,0,0,0,0,0],[0,0,1,0,1,0,0,0,1,1,1,0,0,0,0],[0,0,1,1,1,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,1,1,1,0,0,0,0,1,1,1,0,0,0],[0,0,1,0,1,0,0,0,1,1,1,0,0,0,0],[0,0,1,1,1,0,0,0,1,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],[0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
  	var presetConfigs = [presetPretty, presetSwag, presetSmile];
 	var presetCount   = 0;
 
-	// a functional to iterate through a two-dimensional array
-	var forEachPair = function(array, callback) {
+	// a functional to iterate through a two-dimensional array and change values based on
+	// a given function
+	var mapForEachPair = function(array, callback) {
 		array.forEach(function(column, i) {
 			column.forEach(function(value,j) {
- 				callback(i,j,value);
+ 				array[i][j] = callback(i,j,value);
 			});
 		});
 	}
@@ -57,32 +54,37 @@
 		},0);
 	}
 
+	/**
+	 * Applies the rules of the Game of Life to update the cells.
+	 */
+
 	that.update = function() {
 		// keep a copy of the array so that we can update the cells based on
 		// the current counts
 		var copy = Array.apply(null, new Array(SIZE_X)).map(function() {return new Array(SIZE_Y).fill(0);});
 
-		forEachPair(that.cells, function(i,j,value) {
-			neigh = numNeighbors(i,j);
-			// apply the rules of the game of life
-			if (value === 1) {
-				copy[i][j] = neigh < 2 || neigh > 3 ? 0 : 1;
-			} else if (neigh == 3) {
-				copy[i][j] = neigh === 3 ? 1 : 0;
-			}
+		that.cells.forEach(function(column, i) {
+			column.forEach(function(value,j) {
+				neigh = numNeighbors(i,j);
+				// apply the rules of the game of life
+				if (value === 1) {
+					copy[i][j] = neigh < 2 || neigh > 3 ? 0 : 1;
+				} else if (neigh == 3) {
+					copy[i][j] = neigh === 3 ? 1 : 0;
+				}
 		});
+	});
 
 		// now, set the values to the updated ones
-		forEachPair(that.cells, function(i,j) {that.cells[i][j] = copy[i][j];});
+		mapForEachPair(that.cells, function(i,j) {return copy[i][j];});
 	}
 
 	/**
 	 * Clear the board, setting all cells back to unfilled.
-	 *
 	 */
 
 	that.clearCells = function() {
-		forEachPair(that.cells, function(i,j) {that.cells[i][j] = 0;});
+		mapForEachPair(that.cells, function(i,j) {return 0;});
 	}
 
 	/**
@@ -90,19 +92,19 @@
 	 * being filled.
 	 */
 	that.randomize = function() {
-		forEachPair(that.cells, function(i,j) {that.cells[i][j] = Math.random() <= 0.2  ? 1 : 0; });
+		mapForEachPair(that.cells, function(i,j) {return Math.random() <= 0.2  ? 1 : 0; });
 	}
 
 	/**
-	 * Set the board to a set of three present configurations.
+	 * Set the board to one of a set of present configurations.
 	 */
 	that.preset = function() {
-		forEachPair(that.cells, function(i,j) {that.cells[i][j] = presetConfigs[presetCount][i][j];});
+		mapForEachPair(that.cells, function(i,j) {return presetConfigs[presetCount][i][j];});
 		presetCount = (presetCount + 1)%presetConfigs.length;
 	}
 
 	/**
-	 * Changes the distance between iterations.
+	 * Toggles the value of a cell.
 	 *
 	 * @param {Number} x - The x-coordinate of the cell. (must be a valid index)
 	 * @param {Number} y - The y-coordinate of the cell. (must be a valid index)

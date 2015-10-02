@@ -2,11 +2,17 @@
 // these will be hard to test programmatically. therefore, we run some tests
 // on the gameOfLife datatype in  game_of_life.js
 
-// http://stackoverflow.com/questions/19543514/check-whether-an-array-exists-in-an-array-of-arrays
 
 // ----- HELPER FUNCTIONS ---------------------------------
 
 
+/**
+ * A helper function to find the index of an array in an array of arrays.
+ * from // from http://stackoverflow.com/questions/19543514/check-whether-an-array-exists-in-an-array-of-arrays
+ * @param {Array} haystack    - the array to search through
+ * @param {Array} needle      - the array to find
+ * @return index of first instance of needle in haystack, -1 if doesn't exist
+ */
 function searchForArray(haystack, needle){
   var i, j, current;
   for(i = 0; i < haystack.length; ++i){
@@ -68,6 +74,10 @@ var printLiveCells = function(game) {
 // testing the exported methods of game_of_life.js: cant really test preset and
 // randomize, but testing update, clearCells, and switchCell
 
+
+// these four tests make sure the game of life rules are being implemented correctly
+// they also make sure that neighbor-counting works correctly on the boundary
+
 QUnit.test("test a live cell that dies", function( assert ) {
   var game = gameOfLife(15, 15);
   toggleCells(game, [[0,0]]);
@@ -82,21 +92,23 @@ QUnit.test("test a dead cell that lives", function( assert ) {
   assert.ok(containsCells(game, [[1,1]]), "Passed!" );
 });
 
-QUnit.test("test a live cell that lives", function( assert ) {
+QUnit.test("test a live cell that stays alive #stayinalive", function( assert ) {
   var game = gameOfLife(15, 15);
   toggleCells(game, [[0,0], [0,2],[2,0],[1,1]]);
   game.update();
   assert.ok(containsCells(game, [[0,1],[1,0],[1,1]]), "Passed!" );
 });
 
-QUnit.test("test a dead cell that dies", function( assert ) {
+QUnit.test("test a dead cell that stays dead", function( assert ) {
   var game = gameOfLife(15, 15);
   toggleCells(game, []);
   game.update();
   assert.ok(containsCells(game, []), "Passed!" );
 });
 
-QUnit.test("test clear cells", function( assert ) {
+
+// we only need one test for this
+QUnit.test("test clearCells", function( assert ) {
   var game = gameOfLife(15, 15);
   toggleCells(game, [[1,2], [10,4], [9,5]]);
   game.update();
@@ -104,9 +116,19 @@ QUnit.test("test clear cells", function( assert ) {
   assert.ok(containsCells(game, []), "Passed!" );
 });
 
-QUnit.test("test switch cell", function( assert ) {
+// test that toggling with switchCell works in both directions
+QUnit.test("test switchCell alive --> dead", function( assert ) {
   var game = gameOfLife(15, 15);
   toggleCells(game, [[1,2]]);
   game.switchCell(1,2);
   assert.ok(containsCells(game, []), "Passed!" );
+});
+
+
+QUnit.test("test switchCell dead --> alive", function( assert ) {
+  var game = gameOfLife(15, 15);
+  toggleCells(game, [[1,2]]);
+  game.switchCell(1,2);
+  game.switchCell(1,2);
+  assert.ok(containsCells(game, [[1,2]]), "Passed!" );
 });

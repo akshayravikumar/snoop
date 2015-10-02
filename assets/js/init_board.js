@@ -9,7 +9,8 @@ $(document).ready(function() {
 
 	// the game and board we plan on using
 	var game = gameOfLife(15,15);
-	var board = canvasDrawer(game, "myCanvas");
+	var board = canvasDrawer("myCanvas");
+	board.bindToGame(game);
 
 	// to continuously update the draw the board every TIME_INTERVAL milliseconds
 	drawRepeatedly = function() {
@@ -20,7 +21,6 @@ $(document).ready(function() {
 			return;
 		}
 	}
-
 
 	// update the cells once, then draw the result
 	$("#stepButton").click(function(){
