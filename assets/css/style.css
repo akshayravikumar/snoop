@@ -7,6 +7,30 @@
 	 animation: color_change .63s infinite alternate;
 }
 
+
+.snoop {
+	width: 90%;
+	margin: auto;
+	margin-top: 40%;
+}
+
+.snoop-container-left {
+	width: 20%;
+	display: inline-block;
+	float: left;
+}
+
+.snoop-container-right {
+	width: 20%;
+	display: inline-block;
+	float: right;
+}
+
+.main-container {
+	width: 60%;
+	display: inline-block;
+}
+
 @-webkit-keyframes color_change {
  from { color: blue; }
  to { color: green; }
